@@ -6,8 +6,8 @@ from pydantic import BaseModel
 app = FastAPI(title="Inazuma Eleven VR API")
 
 # Carreguem el CSV
-df_players = pd.read_csv("players.csv")
-df_teams = pd.read_csv("teams.csv")
+df_players = pd.read_csv("data/players.csv")
+df_teams = pd.read_csv("data/teams.csv")
 
 
 class Player(BaseModel):
