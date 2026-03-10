@@ -40,15 +40,13 @@ The data is stored in CSV files and served through multiple endpoints designed f
 
 ## Example Endpoints
 
-
-GET /players
-GET /players/{name}
-GET /players/id/{id}
-GET /teams
-GET /elements
-GET /positions
-GET /players/{name}/power
-
+- GET /players
+- GET /players/{name}
+- GET /players/id/{id}
+- GET /teams
+- GET /elements
+- GET /positions
+- GET /players/{name}/power
 
 ---
 
