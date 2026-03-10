@@ -34,7 +34,6 @@ The data is stored in CSV files and served through multiple endpoints designed f
 - **FastAPI**
 - **Python**
 - **Pandas**
-- **Pydantic**
 - **Docker**
 
 ---
