@@ -7,7 +7,7 @@
 
 A REST API built with **FastAPI** that provides structured data about players and teams from **Inazuma Eleven: Victory Road** and all previous games in the series.
 
-Data is automatically scraped and updated monthly from [zukan.inazuma.jp](https://zukan.inazuma.jp/en/) and the official player spreadsheet.
+Data is automatically scraped and updated monthly from [zukan.inazuma.jp](https://zukan.inazuma.jp/en/) and the official [player spreadsheet](https://docs.google.com/spreadsheets/d/1HW-weeq79GRnoZNcfbj7bINVaDv55WVl/edit?usp=drivesdk&ouid=111840052144453485416&rtpof=true&sd=true) .
 
 🌐 **Live API:** https://inazumaeleven-api.onrender.com
 
