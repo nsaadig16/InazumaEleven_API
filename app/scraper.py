@@ -61,6 +61,24 @@ AGE_MAP = {
     "Adulto":     "Adult",
 }
 
+#_________Map for teams___________--
+
+TEAM_NAME_MAP = {
+    "Raimon First Squad": "Revolutionary Raimon",
+    "Baseball Club Team": "South Cirrus Baseball Club",
+    "Eastwind": "Eastwind International",
+    "Milky Way Charter": "Milky Way",
+    "Noble Insight": "Noble Insight Institute",
+    "Polestar Academy": "Polestar",
+    "Lunar Prime Academy": "Lunar Prime",
+    "Rampart Junior High": "Rampart",
+    "South Cirrus Junior High": "South Cirrus",
+    "Team Sharp": "Inazuma National",
+    "Umbrella MS": "Umbrella",
+
+
+}
+
 # ── Zukan scraper ─────────────────────────────────────────────
 def scrape_images() -> dict:
     """Returns {(name, game, age): image} from chara_param"""
@@ -178,3 +196,55 @@ def build_players_df() -> pd.DataFrame:
 def save_players_csv(df: pd.DataFrame, path: str = "data/players.csv"):
     df.to_csv(path, index=False)
     print(f"💾 Saved to {path}")
+
+
+#_____________TEAMS Scraper________________----
+
+def scrape_team_emblems() -> dict:
+    """Returns {team_name: image_url} from zukan emblem pages"""
+    teams = {}
+    for page in range(1, 6):  # 5 pages
+        try:
+            resp = requests.get(
+                f"https://zukan.inazuma.jp/en/item/emblem/?page={page}",
+                timeout=10
+            )
+            soup = BeautifulSoup(resp.text, "html.parser")
+            for item in soup.select("li"):
+                img = item.select_one("img[alt]")
+                if not img or not img.get("src", "").startswith("https://dxi4wb638ujep.cloudfront.net/1/k"):
+                    continue
+                name  = img["alt"].strip()
+                image = img["src"].strip()
+                if name:
+                    teams[name] = image
+            print(f"  🏅 Emblem page {page}/5 — {len(teams)} found")
+            time.sleep(0.5)
+        except Exception as e:
+            print(f"  ⚠️  Page {page} failed: {e}")
+    return teams
+
+
+def build_teams_csv(players_df: pd.DataFrame) -> pd.DataFrame:
+    print("\n🏅 Scraping team emblems...")
+    emblems = scrape_team_emblems()
+
+    unique_teams = players_df["Team"].dropna().unique()
+    rows = []
+    for team in sorted(unique_teams):
+        if team == "Unknown":
+            continue
+        # Try direct match first, then manual map
+        image = emblems.get(team) or emblems.get(TEAM_NAME_MAP.get(team, ""), "")
+        rows.append({"Team": team, "Image": image})
+
+    df = pd.DataFrame(rows)
+    missing = df[df["Image"] == ""]["Team"].tolist()
+    if missing:
+        print(f"\n⚠️  {len(missing)} teams without emblem:")
+        for t in missing:
+            print(f"   - {t}")
+    else:
+        print("\n✅ All teams have emblems!")
+
+    return df
