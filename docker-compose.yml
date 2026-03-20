@@ -5,3 +5,5 @@ services:
       - "8000:8000"
     container_name: inazumaelevenapi
 
+    command: sh -c "sh /app/banners/apibanner.sh && uv run uvicorn main:app --host 0.0.0.0 --port 8000" # decoració per mostrar la url de l'API al iniciar el contenedor si algo falla podem borrar
+
